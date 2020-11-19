@@ -83,15 +83,6 @@ int main(int argc, char *argv[])
 			wait(&status);
 			break;
 		}
-		char *killme = (char *)malloc(sizeof(char) * 5);
-		printf("Kill? PID:\n");
-		scanf("%s", killme);
-		kill(atoi(killme), 9);
-		for (int i = 0; i < 5; i++)
-		{
-			printf("%d\n", (5 - i));
-			usleep(100000);
-		}
 		break;
 	case 's':
 		if (atoi(argv[2]) > 0)
@@ -107,7 +98,11 @@ int main(int argc, char *argv[])
 		case 0:
 			printf("child: child-process\n");
 			printf("child: PID -- %d\n", getpid());
-			kill(getppid(), 9);
+			// kill(getppid(), 9);
+			setsid();
+			close(stdin);
+			close(stdout);
+			close(stderr);
 			char *arg = {"&"};
 			printf("child: PID parent -- %d\n", getppid());
 			execl(argv[2], argv[2], arg, NULL);
