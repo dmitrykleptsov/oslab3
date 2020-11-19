@@ -99,10 +99,11 @@ int main(int argc, char *argv[])
 			printf("child: child-process\n");
 			printf("child: PID -- %d\n", getpid());
 			// kill(getppid(), 9);
-			setsid();
 			close(stdin);
 			close(stdout);
 			close(stderr);
+			if (setsid() == -1)
+				printf("failed to create a deamon");
 			char *arg = {"&"};
 			printf("child: PID parent -- %d\n", getppid());
 			execl(argv[2], argv[2], arg, NULL);
